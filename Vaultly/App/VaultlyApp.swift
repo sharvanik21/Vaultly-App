@@ -11,6 +11,7 @@ import SwiftData
 struct VaultlyApp: App {
 
     @State private var lock = AppLockManager()
+    @AppStorage("hasSetCurrency") private var hasSetCurrency = false
     private let container: ModelContainer
 
     init() {
@@ -20,13 +21,16 @@ struct VaultlyApp: App {
     var body: some Scene {
         WindowGroup {
             Group {
-                if lock.isUnlocked {
-                    RootView()
-                } else {
+                if !lock.isUnlocked {
                     LockView(manager: lock)
+                } else if !hasSetCurrency{
+                    ProfileSetupView()
+                }
+                else {
+                   RootView()
+                        .privacyScreen()
                 }
             }
-            .privacyScreen()                 // blur when backgrounded
             .preferredColorScheme(.dark)
             .tint(Theme.Colors.accent)
         }

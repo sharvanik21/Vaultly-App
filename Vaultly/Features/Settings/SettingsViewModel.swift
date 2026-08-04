@@ -29,6 +29,8 @@ final class SettingsViewModel {
         } catch {
             print("Delete failed: \(error)")
         }
+        
+        UserDefaults.standard.set(false, forKey: "hasSetCurrency")
     }
     
     func exportCSV() -> URL? {

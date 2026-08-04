@@ -11,7 +11,6 @@ import SwiftData
 struct SettingsView: View {
 
     @AppStorage("currencyCode") private var currencyCode = "USD"
-    @AppStorage("hasSetCurrency") private var hasSetCurrency = false
     
     @Environment(\.modelContext) private var context
     @State private var exportURL: URL?
@@ -29,15 +28,16 @@ struct SettingsView: View {
             Form {
                 
                 Section("PREFERENCES") {
-                    settingsPicker(
-                        "Currency",
-                        icon: "banknote.fill",
-                        color: Theme.Colors.positive,
-                        selection: $currencyCode,
-                        options: AppCurrency.allCases,
-                        label: { $0.displayName },
-                        tag: { $0.rawValue }
-                    )
+                    HStack(spacing: Theme.Spacing.md) {
+                        settingIcon("banknote.fill", color: Theme.Colors.positive)
+                        Text("Currency")
+                            .font(Theme.Typography.headline)
+                            .foregroundStyle(Theme.Colors.textPrimary)
+                        Spacer()
+                        Text(currencyCode)
+                            .font(Theme.Typography.headline)
+                            .foregroundStyle(Theme.Colors.textSecondary)
+                    }
                 }
                 
                 Section("DATA") {
@@ -87,14 +87,10 @@ struct SettingsView: View {
             Button("Cancel", role: .cancel) {}
             Button("Delete", role: .destructive) {model?.deleteAll()}
         } message: {
-            Text("This permanently removes all transactions, budgets, categories, and accounts. This can't be undone.")
+            Text("This permanently removes all transactions, budgets, categories, and accounts, and lets you choose your currency again. This can't be undone.")
         }
         
         .task {
-            if !hasSetCurrency {
-                currencyCode = Locale.current.currency?.identifier ?? "USD"
-                hasSetCurrency = true
-            }
             
             if model == nil {
                 model = SettingsViewModel(transactionRepo: TransactionRepository(context: context),

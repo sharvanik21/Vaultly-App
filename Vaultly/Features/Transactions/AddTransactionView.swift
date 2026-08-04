@@ -20,7 +20,6 @@ struct AddTransactionView: View {
     @State private var note = ""
     @State private var date = Date.now
     @State private var selectedCategory: Category?
-    @State private var selectedAccount: Account?
 
     /// When set, the form edits this transaction in place instead of creating
     /// a new one.
@@ -36,7 +35,6 @@ struct AddTransactionView: View {
             _note = State(initialValue: transaction.note)
             _date = State(initialValue: transaction.date)
             _selectedCategory = State(initialValue: transaction.category)
-            _selectedAccount = State(initialValue: transaction.account)
         }
     }
 
@@ -88,18 +86,16 @@ struct AddTransactionView: View {
                                 .tag(Optional(category))
                         }
                     }
-                    Picker("Account", selection: $selectedAccount){
-                        Text("None").tag(Optional<Account>.none)
-                        ForEach(accounts) { account in
-                            Label {
-                                Text(account.name)
-                            } icon: {
-                                Image(systemName: account.type.systemImage)
-                                    .foregroundStyle(account.type.color)
-                            }
-                            .tag(Optional(account))
+                    
+                    if let account = accounts.first {
+                        HStack {
+                            Text("Account")
+                            Spacer()
+                            Text(account.name)
+                                .foregroundStyle(Theme.Colors.accent)
                         }
                     }
+                    
                     DatePicker("Date", selection: $date, displayedComponents: .date)
                     TextField("Note (optional)", text: $note)
                         .foregroundStyle(Theme.Colors.textPrimary)
@@ -120,7 +116,6 @@ struct AddTransactionView: View {
             }
             .onAppear {
                 guard existingTransaction == nil else { return }
-                selectedAccount = selectedAccount ?? accounts.first
                 selectedCategory = selectedCategory ?? categories.first
             }
         }
@@ -129,13 +124,14 @@ struct AddTransactionView: View {
     private func save() {
         guard let amount else { return }
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
-
+        let account = accounts.first
+        
         if let existingTransaction {
             existingTransaction.amount = amount
             existingTransaction.type = type
             existingTransaction.note = trimmedNote
             existingTransaction.date = date
-            existingTransaction.account = selectedAccount
+            existingTransaction.account = account
             existingTransaction.category = selectedCategory
             onSave(existingTransaction)
         } else {
@@ -144,7 +140,7 @@ struct AddTransactionView: View {
                 type: type,
                 note: trimmedNote,
                 date: date,
-                account: selectedAccount,
+                account: account,
                 category: selectedCategory
             )
             onSave(transaction)
