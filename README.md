@@ -62,15 +62,15 @@ The project focuses on more than just features—it showcases:
  
  ### Multi-Currency
 
-Choose from 11 major currencies.
-
-Amounts automatically reformat throughout the app using each currency's native formatting style.
+Choose your currency once during first-time setup, from 11 major currencies, each rendered using its own native formatting style.
 
 Examples:
 
 - ₹ 1,50,000.00
 - € 3.200,00
 - $ 2,499.99 
+
+The selected currency is locked after setup because all amounts are stored directly in that currency without exchange rate conversion. Changing it later would simply relabel historical transactions instead of converting their values, leading to inaccurate financial records.
 
 ### Privacy & Security
 
@@ -175,6 +175,9 @@ Using `Decimal` avoids floating-point rounding errors that can occur with `Doubl
 Users choose their preferred currency independently from device locale.
 
 Each currency is rendered using its canonical formatting style to ensure consistent financial presentation.
+### Currency Is Set Once
+
+The app’s currency is selected during first-time setup and cannot be changed afterward. Every transaction and balance is stored directly in that currency, with no per-transaction exchange rate conversion. Allowing the currency to change later would simply relabel historical amounts instead of converting them, compromising the accuracy of past financial data.
 
 ### AppStorage vs SwiftData
 
@@ -241,14 +244,14 @@ Requirements
 
 Build and run on a simulator or physical device.
 
-The app launches with an empty ledger—simply create an account and start tracking your finances.
+On first launch, you'll be asked to choose a currency and name your account. This happens once and can't be redone except by deleting all data from Settings.
+
+Once setup is done, add your transactios and start tracking your finances
 
 ---
 
 ## Roadmap
 
-- Account management
-- Category management
 - Recurring transactions
 - CSV import
 - CloudKit sync
