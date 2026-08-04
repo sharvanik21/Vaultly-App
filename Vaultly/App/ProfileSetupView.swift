@@ -17,7 +17,8 @@ struct ProfileSetupView: View {
     @State private var selectedCode: String
     @State private var accountName: String = ""
     @State private var showingCurrencyList = false
-
+    @State private var model: ProfileSetupViewModel?
+    
     init() {
         let detected = Locale.current.currency?.identifier ?? "USD"
         let resolved = AppCurrency(rawValue: detected)?.rawValue ?? AppCurrency.usd.rawValue
@@ -107,14 +108,15 @@ struct ProfileSetupView: View {
         .sheet(isPresented: $showingCurrencyList) {
             CurrencyListPickerView(selectedCode: $selectedCode)
         }
+        .task {
+            if model == nil {
+                model = ProfileSetupViewModel(accountRepo: AccountRepository(context: context))
+            }
+        }
     }
 
     private func confirm() {
-        let trimmedName = accountName.trimmingCharacters(in: .whitespacesAndNewlines)
-        let account = Account(name: trimmedName.isEmpty ? "Main" : trimmedName, type: .checking)
-        context.insert(account)
-        try? context.save()
-
+        model?.createAccount(named: accountName)
         currencyCode = selectedCode
         hasSetCurrency = true
     }

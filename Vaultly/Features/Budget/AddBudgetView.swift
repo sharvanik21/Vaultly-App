@@ -72,6 +72,9 @@ struct AddBudgetView: View {
                             .keyboardType(.decimalPad)
                             .font(Theme.Typography.title.monospaced())
                             .foregroundStyle(Theme.Colors.textPrimary)
+                            .onChange(of: budgetLimit) { _, newValue in
+                                budgetLimit = formatAmount(newValue)
+                            }
                     }
                     .padding()
                     .listRowInsets(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 8))
@@ -87,7 +90,6 @@ struct AddBudgetView: View {
                 
                 Section("DETAILS"){
                     Picker("Category", selection: $selectedCategory){
-                        Text("none").tag(Optional<Category>.none)
                         ForEach(categories){ category in
                             Label(category.name, systemImage: category.symbolName)
                                 .tag(Optional(category))
@@ -149,5 +151,18 @@ struct AddBudgetView: View {
             onSaveBudget(budget)
         }
         dismiss()
+    }
+    
+    private func formatAmount(_ input: String) -> String {
+        var seenDecimal = false
+        return input.filter { character in
+            if character.isNumber { return true }
+            if character == "." || character == "," {
+                if seenDecimal { return false }
+                seenDecimal = true
+                return true
+            }
+            return false
+        }
     }
 }

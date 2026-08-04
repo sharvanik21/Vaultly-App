@@ -66,6 +66,9 @@ struct AddTransactionView: View {
                                 .keyboardType(.decimalPad)
                                 .font(Theme.Typography.title.monospaced())
                                 .foregroundStyle(Theme.Colors.textPrimary)
+                                .onChange(of: amountText) { _, newValue in
+                                    amountText = formatAmount(newValue)
+                                }
                             
                         }
                         .padding()
@@ -80,7 +83,6 @@ struct AddTransactionView: View {
                 
                 Section("Details") {
                     Picker("Category", selection: $selectedCategory){
-                        Text("None").tag(Optional<Category>.none)
                         ForEach(categories) { category in
                             Label(category.name, systemImage: category.symbolName)
                                 .tag(Optional(category))
@@ -146,6 +148,19 @@ struct AddTransactionView: View {
             onSave(transaction)
         }
         dismiss()
+    }
+    
+    private func formatAmount(_ input: String) -> String {
+        var seenDecimal = false
+        return input.filter { character in
+            if character.isNumber { return true }
+            if character == "." || character == "," {
+                if seenDecimal { return false }
+                seenDecimal = true
+                return true
+            }
+            return false
+        }
     }
     
     private var transactionTypeSegment: some View {
