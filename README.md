@@ -233,7 +233,7 @@ Vaultly is built with a local-first approach.
 Clone the repository
 
 ```bash
-git clone https://github.com/sharvanik21/Vaultly.git
+git clone https://github.com/sharvanik21/Vaultly-App
 ```
 
 Open the project
