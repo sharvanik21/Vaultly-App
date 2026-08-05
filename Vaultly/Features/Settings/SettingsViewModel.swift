@@ -26,6 +26,7 @@ final class SettingsViewModel {
         do {
             try transactionRepo.deleteAll()
             try budgetRepo.deleteAll()
+            try accountRepo.deleteAll()
         } catch {
             print("Delete failed: \(error)")
         }
@@ -102,4 +103,12 @@ enum AppCurrency: String, CaseIterable, Identifiable {
     }
 }
 
-
+extension AppCurrency {
+    /// Falls back to USD when the locale's currency isn't one of the supported ones.
+    static func resolved(from locale: Locale) -> AppCurrency {
+        guard let code = locale.currency?.identifier, let currency = AppCurrency(rawValue: code) else {
+            return .usd
+        }
+        return currency
+    }
+}

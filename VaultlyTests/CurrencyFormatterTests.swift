@@ -36,4 +36,16 @@ struct CurrencyFormatterTests {
         let result = CurrencyFormatter.signed(50, code: "USD")
         #expect(result.hasPrefix("+"))
     }
+    
+    @Test("A supported locale currency is used as the suggested default")
+    func resolvesSupportedCurrency() {
+        let locale = Locale(identifier: "de_DE")
+        #expect(AppCurrency.resolved(from: locale) == .eur)
+    }
+
+    @Test("An unsupported locale currency falls back to USD")
+    func fallsBackToUSDForUnsupportedCurrency() {
+        let locale = Locale(identifier: "pt_BR")
+        #expect(AppCurrency.resolved(from: locale) == .usd)
+    }
 }

@@ -20,9 +20,7 @@ struct ProfileSetupView: View {
     @State private var model: ProfileSetupViewModel?
     
     init() {
-        let detected = Locale.current.currency?.identifier ?? "USD"
-        let resolved = AppCurrency(rawValue: detected)?.rawValue ?? AppCurrency.usd.rawValue
-        _selectedCode = State(initialValue: resolved)
+        _selectedCode = State(initialValue: AppCurrency.resolved(from: .current).rawValue)
     }
 
     private var selectedCurrency: AppCurrency {

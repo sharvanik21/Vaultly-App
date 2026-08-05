@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct RootView: View {
+struct MainTabView: View {
     var body: some View {
         TabView {
             Tab("Home", systemImage: "house.fill") {
@@ -40,6 +40,6 @@ private struct PlaceholderScreen: View {
 }
 
 #Preview {
-    RootView()
+    MainTabView()
         .modelContainer(PersistenceController.preview())
 }

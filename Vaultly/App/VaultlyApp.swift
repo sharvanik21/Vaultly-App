@@ -27,7 +27,7 @@ struct VaultlyApp: App {
                     ProfileSetupView()
                 }
                 else {
-                   RootView()
+                  MainTabView()
                         .privacyScreen()
                 }
             }

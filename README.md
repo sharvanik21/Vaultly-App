@@ -10,8 +10,9 @@
 Built with **SwiftUI** and **SwiftData** to showcase modern native iOS development practices.
 
 <p align="center">
+  <img src="Vaultly/Screenshots/profilesetup.png" width="240" />
   <img src="Vaultly/Screenshots/home.png" width="240" />
-    <img src="Vaultly/Screenshots/recentactivity.png" width="240" />
+  <img src="Vaultly/Screenshots/recentactivity.png" width="240" />
   <img src="Vaultly/Screenshots/transactions.png" width="240" />
   <img src="Vaultly/Screenshots/budgets.png" width="240" />
 </p>
@@ -139,8 +140,10 @@ Vaultly/
 │   └── Utilities/
 │
 ├── Models/
-│
+│   └── Account, Transaction, Category, Budget
+│   
 └── Features/
+    ├── Profile/
     ├── Home/
     ├── Transactions/
     ├── Budgets/
@@ -207,8 +210,10 @@ Tests are written using **Swift Testing** (instead of XCTest) and execute agains
 | `BudgetViewModelTests` | Budget progress calculation, over-budget clamping, remaining balance, and category/period-based spending |
 | `TransactionRepositoryTests` | Creating, deleting, and fetching transactions with deterministic sorting using an in-memory `ModelContainer` |
 | `HomeViewModelTests` | Net worth aggregation across accounts and current-month income and expense summaries |
+| `ProfileSetupViewModelTests` | Trimming and fallback-to-"Main" behavior when creating the initial account |
 
 Current test coverage focuses on business logic and the data layer. UI-specific behavior, such as biometric authentication, the privacy overlay, and form validation, is planned for future iterations (see the Roadmap).
+
 
 ---
 
@@ -246,12 +251,13 @@ Build and run on a simulator or physical device.
 
 On first launch, you'll be asked to choose a currency and name your account. This happens once and can't be redone except by deleting all data from Settings.
 
-Once setup is done, add your transactios and start tracking your finances
+Once setup is done, add your transactions and start tracking your finances
 
 ---
 
 ## Roadmap
 
+- Transaction search and filtering
 - Recurring transactions
 - CSV import
 - CloudKit sync

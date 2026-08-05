@@ -25,6 +25,7 @@ protocol AccountRepositoryProtocol {
     func all() throws -> [Account]
     func add(_ account: Account) throws
     func delete(_ account: Account) throws
+    func deleteAll() throws
 }
 
 @MainActor
@@ -105,6 +106,12 @@ struct AccountRepository: AccountRepositoryProtocol {
 
     func delete(_ account: Account) throws {
         context.delete(account)
+        try context.save()
+    }
+    
+    func deleteAll() throws {
+        let items = try context.fetch(FetchDescriptor<Account>())
+        for item in items { context.delete(item) }
         try context.save()
     }
 }
