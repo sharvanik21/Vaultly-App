@@ -12,7 +12,7 @@ enum SampleData {
 
         let defaults: [(String, String, Int)] = [
             ("Salary",     "dollarsign.circle.fill", 0x4ADE80),
-            ("Groceries",  "cart.fill",              0xF59E0B),
+            ("Groceries",  "cart.fill",              0xFACC15),
             ("Rent",       "house.fill",             0x60A5FA),
             ("Transport",  "car.fill",               0xA78BFA),
             ("Dining",     "fork.knife",             0xF87171),
